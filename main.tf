@@ -19,7 +19,7 @@ resource aws_lb "this" {
             enabled = var.enable_access_logs
         }
     }
-    subnets = var.subnets
+    subnets = var.lb_type == "network" ? (length(var.subnet_mappings) > 0 ? null : var.subnets) : var.subnets
 
     tags = merge( { "Name" = var.name }, var.default_tags )
 
@@ -40,7 +40,7 @@ resource aws_lb "this" {
         content {
             subnet_id            = subnet_mapping.value.subnet_id
             allocation_id        = lookup(subnet_mapping.value, "create_eip", false) ? aws_eip.this[subnet_mapping.value.subnet_id].id : lookup(subnet_mapping.value, "allocation_id", null)
-            private_ipv4_address = lookup(subnet_mapping.value, "private_ipv4_address", null)
+            private_ipv4_address = var.internal ? lookup(subnet_mapping.value, "private_ipv4_address", null) : null
             ipv6_address         = lookup(subnet_mapping.value, "ipv6_address", null)
         }
     }

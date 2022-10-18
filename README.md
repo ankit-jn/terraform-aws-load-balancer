@@ -70,7 +70,7 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | Name | Description | Type | Default | Required | Example|
 |:------|:------|:------|:------|:------:|:------|
 | <a name="enable_cross_zone_load_balancing"></a> [enable_cross_zone_load_balancing](#input\_enable\_cross\_zone\_load\_balancing) | Flag to decide if cross-zone load balancing of the load balancer will be enabled | `bool` | `false` | no | |
-| <a name="subnet_mappings"></a> [subnet_mappings](#subnet\_mappings) | List of the configurations of the Subnets which are being attached to Load Balancer  | `list` | `[]` | no | |
+| <a name="subnet_mappings"></a> [subnet_mappings](#subnet\_mappings) | List of the configurations of the Subnets which are being attached to Load Balancer. <br> This property will take preference over the property `subnets`  | `list` | `[]` | no | |
 
 ## Nested Configuration Maps:  
 
