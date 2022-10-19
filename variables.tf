@@ -96,7 +96,7 @@ variable "default_tags" {
 }
 
 ######################################################
-## Application Load Balancer Specific Properties
+## Application/Gateway Load Balancer Specific Properties
 ######################################################
 variable "security_groups" {
     description = <<EOF
@@ -194,15 +194,9 @@ variable "enable_waf_fail_open" {
   default     = false
 }
 
-
 ######################################################
 ## Network Load Balancer Specific Properties
 ######################################################
-variable "enable_cross_zone_load_balancing" {
-    description = "(Optional) Flag to decide if cross-zone load balancing of the load balancer will be enabled."
-    type        = bool
-    default     = false
-}
 
 variable "subnet_mappings" {
     description = <<EOF
@@ -217,6 +211,15 @@ ipv6_address: (Optional) An ipv6 address within the subnet to assign to the inte
 EOF
     type = list(any)
     default = []
+}
+
+######################################################
+## Network/Gateway Load Balancer Specific Properties
+######################################################
+variable "enable_cross_zone_load_balancing" {
+    description = "(Optional) Flag to decide if cross-zone load balancing of the load balancer will be enabled."
+    type        = bool
+    default     = false
 }
 
 ######################################################
