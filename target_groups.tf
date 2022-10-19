@@ -56,13 +56,31 @@ resource aws_lb_target_group "this" {
 
 }
 
-## targets Registration
+## Allow Target Groups (which are of type `lambda`) to invoke Lamnda Functions 
+resource aws_lambda_permission "this" {
+    for_each = { for k, v in local.lambda_targets : k => v }
+
+    statement_id = "AllowExecutionFromLoadBalancer"
+    
+    action      = "lambda:InvokeFunction"
+    principal   = "elasticloadbalancing.amazonaws.com"
+
+    function_name = each.value.function_details[6]
+    qualifier     = try(each.value.function_details[7], null)
+    
+    source_arn = aws_lb_target_group.this[each.value.tg_name].arn
+}
+
+## Targets Registration
 resource aws_lb_target_group_attachment "this" {
-  for_each = local.targets
+    for_each = local.targets
 
-  target_group_arn  = aws_lb_target_group.this[each.value.tg_name].arn
-  target_id         = each.value.target_id
-  port              = lookup(each.value, "port", null)
-  availability_zone = lookup(each.value, "availability_zone", null)
+    target_group_arn  = aws_lb_target_group.this[each.value.tg_name].arn
+    target_id         = each.value.target_id
+    port              = lookup(each.value, "port", null)
+    availability_zone = lookup(each.value, "availability_zone", null)
 
+    depends_on = [
+      aws_lambda_permission.this
+    ]
 }

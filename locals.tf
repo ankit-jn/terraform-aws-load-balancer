@@ -1,16 +1,29 @@
 locals {
-    
-    alb = (var.lb_type == "application")
-    nlb = (var.lb_type == "network")
-    gateway = (var.lb_type == "gateway")
+        ## Create local variable to identify the Load Balancer Type
+        alb = (var.lb_type == "application")
+        nlb = (var.lb_type == "network")
+        gateway = (var.lb_type == "gateway")
 
-    security_groups = (local.alb && var.create_sg) ? [ module.security_group[0].security_group_id ] : var.security_groups
-    sg_ingress_rules = flatten([ for rule_key, rule in var.sg_rules :  rule if rule_key == "ingress" ])
-    sg_egress_rules = flatten([ for rule_key, rule in var.sg_rules :  rule if rule_key == "egress" ])
+        security_groups = (local.alb && var.create_sg) ? [ module.security_group[0].security_group_id ] : var.security_groups
+        
+        ## Filter Ingress Rules
+        sg_ingress_rules = flatten([ for rule_key, rule in var.sg_rules :  rule if rule_key == "ingress" ])
+        ## Filter Egress Rules
+        sg_egress_rules = flatten([ for rule_key, rule in var.sg_rules :  rule if rule_key == "egress" ])
 
-    nlb_eips = { for subnet in var.subnet_mappings : subnet.subnet_id => subnet if lookup(subnet, "create_eip", false) }
+        nlb_eips = { for subnet in var.subnet_mappings : subnet.subnet_id => subnet if lookup(subnet, "create_eip", false) }
 
-    targets = merge(flatten([ for tg in var.target_groups: 
-                        [ for target in lookup(tg, "targets", {}): 
-                                {format("%s.%s", tg.name, target.name) = merge({"tg_name" = tg.name}, target)} ]])...)
+        ## Enrich the targets with Target Type field and Target Group Name
+        targets = merge(flatten([ for tg in var.target_groups: 
+                                [ for target in lookup(tg, "targets", {}): 
+                                        {format("%s.%s", tg.name, target.name) = merge(
+                                                                                { "tg_name" = tg.name }, 
+                                                                                { "tg_type" = tg.target_type },
+                                                                                target)} ]])...)
+        ## FIlter All Lamda Targets
+        lambda_targets = { for k, target in local.targets:
+                                k => merge(
+                                        { "function_details" = split(":", target.target_id) }, 
+                                        target) if target.tg_type == "lambda" }
+
 }
