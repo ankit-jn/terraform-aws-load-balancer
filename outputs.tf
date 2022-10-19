@@ -20,3 +20,8 @@ output "sg_id" {
     description = "The Security Group ID associated to ALB"
     value       = (local.alb && var.create_sg) ? module.security_group[0].security_group_id : ""
 }
+
+output "target_groups" {
+    description = "The target Groups' ARN"
+    value       = {for tg in aws_lb_target_group.this: tg.name => tg.arn}
+}

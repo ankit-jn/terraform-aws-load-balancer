@@ -234,6 +234,28 @@ target_type: (Optional, default `instance`) Type of target
 port: (Required) Port on which targets receive traffic, unless overridden when registering a specific target.
 protocol: (Optional, default `HTTP` if `target_type` is not `lambda`) Protocol to use to connect with the target.
 protocol_version: (Optional) The protocol version. Only applicable when protocol is `HTTP` or `HTTPS`
+connection_termination: (Optional, default `false`) Whether to terminate connections at the end of the deregistration timeout on Network Load Balancers.
+deregistration_delay: (Optional, default `300`) Time, in seconds, for Elastic Load Balancing to wait before changing the state of a deregistering target from draining to unused.
+load_balancing_algorithm_type: (Optional, default `round_robin` if ALB) Determines how the Application Load balancer selects targets when routing requests.
+lambda_multi_value_headers_enabled: (Optional) Whether the request and response headers exchanged between the load balancer and the Lambda function include arrays of values or strings.
+preserve_client_ip: (Optional) Whether client IP preservation is enabled.
+proxy_protocol_v2: (Optional, default `false` in NLB) Whether to enable support for proxy protocol v2 on Network Load Balancers.
+slow_start: (Optional, default `0`) Time, in seconds for targets to warm up before the load balancer sends them a full share of requests.
+health_check: Health Check configuration Map
+    enabled: (Optional, default `true`) Whether health checks are enabled
+    protocol: (Optional, default `HTTP` if target_type is not `lambda`) Protocol to use to connect with the target
+    path: (Optional) Destination for the health check request.
+    port: (Optional, default `traffic-port`) Port to use to connect with the target.
+    interval: (Optional, default `30`) Approximate amount of time, in seconds, between health checks of an individual target.
+    healthy_threshold: (Optional, default `3`) Number of consecutive health checks successes required before considering an unhealthy target healthy.
+    unhealthy_threshold: (Optional, default `3`) Number of consecutive health check failures required before considering the target unhealthy.
+    timeout: (Optional) Amount of time, in seconds, during which no response means a failed health check.
+    matcher: (Optional) Response codes to use when checking for a healthy responses from a target.
+stickiness: Stickiness configuration Map
+    enabled: (Optional) Boolean to enable / disable stickiness
+    type: (Required) The type of sticky sessions.
+    cookie_name: (Optional) Name of the application based cookie.
+    cookie_duration: (Optional) Only used when the type is lb_cookie. The time period, in seconds, during which requests from a client should be routed to the same target.
 EOF
     type = list(any)
     default = []
