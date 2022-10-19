@@ -49,7 +49,7 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="desync_mitigation_mode"></a> [desync_mitigation_mode](#input\_desync\_mitigation\_mode) | Determines how the load balancer handles requests that might pose a security risk to an application due to HTTP desync. | `string` | `defensive` | no | |
 | <a name="default_tags"></a> [default_tags](#input\_default\_tags) | A map of tags to assign to all the resource | `map` | `{}` | no | |
 
-#### Application Load Balancer Specific Properties
+#### Application/Gateway Load Balancer Specific Properties
 ---
 
 | Name | Description | Type | Default | Required | Example|
@@ -69,8 +69,14 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 
 | Name | Description | Type | Default | Required | Example|
 |:------|:------|:------|:------|:------:|:------|
-| <a name="enable_cross_zone_load_balancing"></a> [enable_cross_zone_load_balancing](#input\_enable\_cross\_zone\_load\_balancing) | Flag to decide if cross-zone load balancing of the load balancer will be enabled | `bool` | `false` | no | |
 | <a name="subnet_mappings"></a> [subnet_mappings](#subnet\_mappings) | List of the configurations of the Subnets which are being attached to Load Balancer. <br> This property will take preference over the property `subnets`  | `list` | `[]` | no | |
+
+#### Network/Gateway Load Balancer Specific Properties
+---
+
+| Name | Description | Type | Default | Required | Example|
+|:------|:------|:------|:------|:------:|:------|
+| <a name="enable_cross_zone_load_balancing"></a> [enable_cross_zone_load_balancing](#input\_enable\_cross\_zone\_load\_balancing) | Flag to decide if cross-zone load balancing of the load balancer will be enabled | `bool` | `false` | no | |
 
 ## Nested Configuration Maps:  
 
