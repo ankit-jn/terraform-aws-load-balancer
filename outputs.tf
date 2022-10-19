@@ -1,19 +1,22 @@
 output "arn" {
     description = "The ARN of the load balancer"
-    value       = aws_lb.this.arn
+    value       = local.alb ? aws_lb.application[0].arn : (
+                                local.gateway ? aws_lb.gateway[0].arn : aws_lb.network[0].arn)
 }
 
 output "dns_name" {
     description = "The DNS name of the load balancer."
-    value       = aws_lb.this.dns_name
+    value       = local.alb ? aws_lb.application[0].dns_name : (
+                                local.gateway ? aws_lb.gateway[0].dns_name : aws_lb.network[0].dns_name)
 }
 
 output "zone_id" {
     description = "The canonical hosted zone ID of the load balancer"
-    value       = aws_lb.this.zone_id
+    value       = local.alb ? aws_lb.application[0].zone_id : (
+                                local.gateway ? aws_lb.gateway[0].zone_id : aws_lb.network[0].zone_id)
 }
 
 output "sg_id" {
     description = "The Security Group ID associated to ALB"
-    value       = local.create_security_group ? module.alb_security_group[0].security_group_id : ""
+    value       = (local.alb && var.create_sg) ? module.security_group[0].security_group_id : ""
 }

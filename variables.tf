@@ -218,3 +218,20 @@ EOF
     type = list(any)
     default = []
 }
+
+######################################################
+## Target Groups
+######################################################
+variable "target_groups" {
+    description = <<EOF
+List of Target Groups for Load Balancer where each entry will be a map for Target Group Specification
+
+name: (Required) Name of the target group.
+target_type: (Optional, default `instance`) Type of target
+port: (Required) Port on which targets receive traffic, unless overridden when registering a specific target.
+protocol: (Optional, default `HTTP` if `target_type` is not `lambda`) Protocol to use to connect with the target.
+protocol_version: (Optional) The protocol version. Only applicable when protocol is `HTTP` or `HTTPS`
+EOF
+    type = list(any)
+    default = []
+}
