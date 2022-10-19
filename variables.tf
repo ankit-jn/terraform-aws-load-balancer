@@ -256,6 +256,11 @@ stickiness: Stickiness configuration Map
     type: (Required) The type of sticky sessions.
     cookie_name: (Optional) Name of the application based cookie.
     cookie_duration: (Optional) Only used when the type is lb_cookie. The time period, in seconds, during which requests from a client should be routed to the same target.
+targets: List of Targets to be registered with the target Group where each entry will be a map of following keys,
+    name: (required) Unique identifier within the list, for Terraform perspective
+    target_id: (required) ID of the target to be registered; Instance ID, COntainer ID, or Lambda ARN, ARN of another ALB
+    port: (Optional) Port on which target receives the traffic
+    availability_zone: (Optional) The Availability Zone where the IP address of the target is to be registered.
 EOF
     type = list(any)
     default = []

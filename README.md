@@ -133,6 +133,7 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="slow_start"></a> [slow_start](#input\_slow\_start) | Time, in seconds, for targets to warm up before the load balancer sends them a full share of requests. | `number` | `0` | no | |
 | <a name="health_check"></a> [health_check](#health\_check) | Health Check configuration | `map(any)` |  | no | |
 | <a name="stickiness"></a> [stickiness](#stickiness) | Stickiness configuration | `map(any)` |  | no | |
+| <a name="targets"></a> [targets](#targets) | List of Targets to be registered with the target Group | `list(any)` |  | no | <pre>[<br>   {<br>     name        = "target-1"<br>     target_id   = "<EC2 Instance#1 ID>"<br>     port        = 80<br>   },<br>   {<br>     name        = "target-2"<br>     target_id   = "<EC2 Instance#2 ID>"<br>     port        = 8080<br>   }<br>] |
 
 #### health_check
 
@@ -158,6 +159,15 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="type"></a> [type](#input\_type) | The type of sticky sessions. | `string` |  | yes | |
 | <a name="cookie_name"></a> [cookie_name](#input\_cookie_name) | Name of the application based cookie. Only Valid if stickiness `type` is `app_cookie` | `string` |  | no | |
 | <a name="cookie_duration"></a> [cookie_duration](#input\_cookie_duration) | The time period, in seconds, during which requests from a client should be routed to the same target. Only Valid if stickiness `type` is `lb_cookie` | `number` |  | no | |
+
+#### targets
+
+| Name | Description | Type | Default | Required | Example|
+|:------|:------|:------|:------|:------:|:------|
+| <a name="name"></a> [name](#input\_name) | Unique identifier within the list, for Terraform perspective | `string` |  | yes | |
+| <a name="target_id"></a> [target_id](#input\_target_id) | ID of the target to be registered; Instance ID, COntainer ID, or Lambda ARN, ARN of another ALB | `string` |  | yes | |
+| <a name="port"></a> [port](#input\_port) | Port on which target receives the traffic | `string` |  | no | |
+| <a name="availability_zone"></a> [availability_zone](#input\_availability\_zone) | The Availability Zone where the IP address of the target is to be registered. | `string` |  | no | |
 
 ## Outputs
 

@@ -55,3 +55,14 @@ resource aws_lb_target_group "this" {
     tags = merge( { "Name" = format("%s.%s", var.name, each.key) }, var.default_tags )
 
 }
+
+## targets Registration
+resource aws_lb_target_group_attachment "this" {
+  for_each = local.targets
+
+  target_group_arn  = aws_lb_target_group.this[each.value.tg_name].arn
+  target_id         = each.value.target_id
+  port              = lookup(each.value, "port", null)
+  availability_zone = lookup(each.value, "availability_zone", null)
+
+}

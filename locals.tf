@@ -9,4 +9,8 @@ locals {
     sg_egress_rules = flatten([ for rule_key, rule in var.sg_rules :  rule if rule_key == "egress" ])
 
     nlb_eips = { for subnet in var.subnet_mappings : subnet.subnet_id => subnet if lookup(subnet, "create_eip", false) }
+
+    targets = merge(flatten([ for tg in var.target_groups: 
+                        [ for target in lookup(tg, "targets", {}): 
+                                {format("%s.%s", tg.name, target.name) = merge({"tg_name" = tg.name}, target)} ]])...)
 }
