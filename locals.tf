@@ -32,7 +32,9 @@ locals {
                                                 {format("%s.%s", upper(protocol), listener.port) = merge(listener, 
                                                                                                          { "protocol" = upper(protocol) })} 
                                                         ] if contains([ "HTTP", "TCP", "UDP", "TCP_UDP", "HTTPS", "TLS" ], upper(protocol))])...)
-        
-
-
+                
+        listener_rules = merge(flatten([for rule in var.listener_rules: 
+                                        { format("%s.%s.%s", upper(rule.listener_protocol), rule.listener_port, rule.priority) = merge(
+                                        {"listener" = format("%s.%s", upper(rule.listener_protocol), rule.listener_port)},
+                                        rule)} ])...)
 }

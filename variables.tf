@@ -330,8 +330,27 @@ variable "default_ssl_policy" {
     default = "ELBSecurityPolicy-2016-08"
 }
 
-variable "gateway_listener" {
-    description = "The listener for Gateway Load Balancer"
-    type        = map(any)
-    default     = {}
+variable "listener_rules" {
+    description = <<EOF
+List of Application/Network Load Balancer Listener Rules where each entry will be a map:
+
+listener_protocol: Listener Reference- The Load Balancer Protocol 
+listener_port: Listener Reference- The Load Balancer Port
+priority: Priority of Rule
+actions: The Map of Routing Actions (at least one action is required): forward, redirect, fixed-response, authenticate_cognito, authenticate_oidc
+         Structure is same as defined in property - `listeners` 
+conditions: Map of following Conditions used with the Rule. At least one condition is required.
+    host_header: (Optional) Contains a single values item which is a list of host header patterns to match
+    http_header: (Optional) HTTP headers to match. Map of keys `header_name`, `header_values` 
+        header_name: Header name
+        header_values: List of values to match with
+    http_request_method: (Optional) Contains a single values item which is a list of HTTP request methods or verbs to match.
+    path_pattern: (Optional) Contains a single values item which is a list of path patterns to match against the request URL.
+    query_string: (Optional) Query strings to match. List if Query string map
+        key: Query String Key
+        value: Query String Value
+    source_ip: (Optional) Contains a single values item which is a list of source IP CIDR notations to match.
+
+EOF
+    default = []
 }

@@ -49,7 +49,10 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="desync_mitigation_mode"></a> [desync_mitigation_mode](#input\_desync\_mitigation\_mode) | Determines how the load balancer handles requests that might pose a security risk to an application due to HTTP desync. | `string` | `defensive` | no | |
 | <a name="target_groups"></a> [target_groups](#target\_group) | List of Target Groups for Load Balancer | `list(any)` | `[]` | no | <pre>[<br>   {<br>     name = "alb-target-1"<br>     target_type  = "ip"<br>     port = 80<br>     protocol = "HTTP"<br>     interval = 60<br><br>     health_check = {<br>         healthy_threshold = 5<br>         unhealthy_threshold = 3<br>     }<br>     stickiness = {<br>       type = "lb_cookie"<br>       cookie_duration = 3600<br>     }<br>   }<br>] |
 | <a name="listeners"></a> [listeners](#listener) | Map of Application/Network Load Balancer Listeners where Map Keys are the LB protocols: `HTTP`, `HTTPS`, `TCP`, `UDP`, `TCP_UDP`, `TLS` and values are the list of Listeners for keyed protocol. Only applicable for ALB, NLB | `map` | `{}` | no | <pre>{<br>   http = [<br>     {<br>       port = 80<br>       order = 3000<br>       forward = {<br>         target_groups = {<br>           "alb-target-8080" = {<br>             weight = 70<br>           }<br>           "alb-target-8081" = {<br>             weight = 30<br>           }<br>         }<br>         stickiness = 60<br>       }<br>     },<br>     {<br>       port = 81<br>       order = 3000<br>       action_type = "redirect"<br>       redirect = {<br>         port        = "8081"<br>         protocol    = "HTTP"<br>         status_code = "HTTP_301"<br>       }<br>     },<br>   ],<br>   https = [<br>     {<br>       port = 443<br>       action_type = "authenticate-cognito"<br>       order = 3000<br>       certificate_arn = "arn:aws:acm:<region>::certificate/<certificate_ID>"<br>       authenticate_cognito = {<br>         user_pool_arn       = "arn:aws:cognito-idp:<region>::userpool/<pool_id>"<br>         user_pool_client_id = "client id"<br>         user_pool_domain    = "domain"<br>       }<br>     }<br>   ]<br>} |
+| <a name="default_ssl_policy"></a> [default_ssl_policy](#input\_default\_ssl\_policy) | The default SSL Policy for the listeners with Protocol `HTTPS` and `TLS` | `string` | `"ELBSecurityPolicy-2016-08"` | no | |
+| <a name="listener_rules"></a> [listener_rules](#listener_rule) | List of Application/Network Load Balancer Listener Rules | `list` | `[]` | no | <pre>[<br>   {<br>     listener_protocol = "HTTP"<br>     listener_port = 80<br>     priority = 200<br><br>     actions = {<br>       forward = {<br>         //forward action properties<br>       },<br>       redirect = {<br>         // redirect action properties<br>       }<br>     }<br>     conditions = {<br>       path_pattern =[<br>         "/images",<br>         "static"<br>       ]<br>       source_ip = ["xxx.xxx.xxx.xxx/xx"]<br>     }<br>   },<br>   {<br>     listener_protocol = "HTTP"<br>     listener_port = 81<br>     priority = 300<br><br>     actions = {<br>       forward = {<br>         //forward action properties<br>       },<br>       fixed_response = {<br>         // fixed-response action properties<br>       }<br>     }<br>     conditions = {<br>       values for one of the conditions<br>       host_header = [<br>         "arjstack.com",<br>         "google.com"<br>       ]<br>     }<br>   }<br>] |
 | <a name="default_tags"></a> [default_tags](#input\_default\_tags) | A map of tags to assign to all the resource | `map` | `{}` | no | |
+
 
 #### Application/Gateway Load Balancer Specific Properties
 ---
@@ -239,6 +242,27 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="scope"></a> [scope](#input\_scope) | Set of user claims to be requested from the IdP | `set(string)` |  | no | |
 | <a name="session_cookie_name"></a> [session_cookie_name](#input\_session\_cookie\_name) | Name of the cookie used to maintain session information. | `string` |  | no | |
 | <a name="session_timeout"></a> [session_timeout](#input\_session\_timeout) | Maximum duration of the authentication session, in seconds. | `number` |  | no | |
+
+#### listener_rule
+
+| Name | Description | Type | Default | Required | Example|
+|:------|:------|:------|:------|:------:|:------|
+| <a name="listener_protocol"></a> [listener_protocol](#input\_listener\_protocol) | Listener Reference- The Load Balancer Protocol  | `string` |  | yes | |
+| <a name="listener_port"></a> [listener_port](#input\_listener\_port) | Listener Reference- The Load Balancer Port | `number` |  | yes | |
+| <a name="priority"></a> [priority](#input\_priority) | Priority of Rule | `number` |  | yes | |
+| <a name="actions"></a> [actions](#input\_actions) | The Map of Routing Actions (at least one action is required):<br>[`forward`](#action_forward)<br>[`redirect`](#action_redirect)<br>[`fixed-response`](#action_fixed_response)<br>[`authenticate_cognito`](#action_authenticate_cognito)<br>[`authenticate_oidc`](#action_authenticate_oidc) | `string` |  | yes | |
+| <a name="conditions"></a> [conditions](#conditions) | Map of Conditions used with the Rule: At least one condition is required. | `map` |  | yes | |
+
+#### conditions
+
+| Name | Description | Type | Default | Required | Example|
+|:------|:------|:------|:------|:------:|:------|
+| <a name="host_header"></a> [host_header](#input\_host\_header) | Contains a single values item which is a list of host header patterns to match | `list(string)` |  | yes | <pre>[<br>   "arjstack.com",<br>   "google.com"<br>] |
+| <a name="http_header"></a> [http_header](#input\_http\_header) | HTTP headers to match. | `map` |  | yes | <pre>{<br>   header_name = "x-amz-security-token"<br>   header_values = ["v1", "v2"]<br>}|
+| <a name="http_request_method"></a> [http_request_method](#input\_http\_request\_method) | Contains a single values item which is a list of HTTP request methods or verbs to match. | `list(string)` |  | yes | <pre>[<br>   "PUT",<br>   "POST"<br>] |
+| <a name="path_pattern"></a> [path_pattern](#input\_path\_pattern) | Contains a single values item which is a list of path patterns to match against the request URL. | `list(string)` |  | yes | <pre>[<br>   "/images",<br>   "/static"<br>] |
+| <a name="query_string"></a> [query_string](#input\_query\_string) | Query strings (key-value pair) to match | `list` |  | yes | <pre>[<br>   {<br>     key = "type"<br>     value = "images"<br>   },<br>   {<br>     key = "location"<br>     value = "asia"<br>   },<br>] |
+| <a name="source_ip"></a> [source_ip](#input\_source_ip) | Contains a single values item which is a list of source IP CIDR notations to match. | `list(string)` |  | no | <pre>[<br>   "xxx.xxx.xxx.xxx/xx",<br>   "xxx.xxx.xxx.xxx/xx"<br>] |
 
 ## Outputs
 
