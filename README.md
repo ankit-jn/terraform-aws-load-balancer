@@ -48,6 +48,7 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="ip_address_type"></a> [ip_address_type](#input\_ip\_address\_type) | The type of IP addresses used by the subnets for your load balancer | `string` | `ipv4` | no | |
 | <a name="desync_mitigation_mode"></a> [desync_mitigation_mode](#input\_desync\_mitigation\_mode) | Determines how the load balancer handles requests that might pose a security risk to an application due to HTTP desync. | `string` | `defensive` | no | |
 | <a name="target_groups"></a> [target_groups](#target\_group) | List of Target Groups for Load Balancer | `list(any)` | `[]` | no | <pre>[<br>   {<br>     name = "alb-target-1"<br>     target_type  = "ip"<br>     port = 80<br>     protocol = "HTTP"<br>     interval = 60<br><br>     health_check = {<br>         healthy_threshold = 5<br>         unhealthy_threshold = 3<br>     }<br>     stickiness = {<br>       type = "lb_cookie"<br>       cookie_duration = 3600<br>     }<br>   }<br>] |
+| <a name="listeners"></a> [listeners](#listener) | Map of Application/Network Load Balancer Listeners where Map Keys are the LB protocols: `HTTP`, `HTTPS`, `TCP`, `UDP`, `TCP_UDP`, `TLS` and values are the list of Listeners for keyed protocol. Only applicable for ALB, NLB | `map` | `{}` | no | <pre>{<br>   http = [<br>     {<br>       port = 80<br>       order = 3000<br>       forward = {<br>         target_groups = {<br>           "alb-target-8080" = {<br>             weight = 70<br>           }<br>           "alb-target-8081" = {<br>             weight = 30<br>           }<br>         }<br>         stickiness = 60<br>       }<br>     },<br>     {<br>       port = 81<br>       order = 3000<br>       action_type = "redirect"<br>       redirect = {<br>         port        = "8081"<br>         protocol    = "HTTP"<br>         status_code = "HTTP_301"<br>       }<br>     },<br>   ],<br>   https = [<br>     {<br>       port = 443<br>       action_type = "authenticate-cognito"<br>       order = 3000<br>       certificate_arn = "arn:aws:acm:<region>::certificate/<certificate_ID>"<br>       authenticate_cognito = {<br>         user_pool_arn       = "arn:aws:cognito-idp:<region>::userpool/<pool_id>"<br>         user_pool_client_id = "client id"<br>         user_pool_domain    = "domain"<br>       }<br>     }<br>   ]<br>} |
 | <a name="default_tags"></a> [default_tags](#input\_default\_tags) | A map of tags to assign to all the resource | `map` | `{}` | no | |
 
 #### Application/Gateway Load Balancer Specific Properties
@@ -169,6 +170,76 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="port"></a> [port](#input\_port) | Port on which target receives the traffic | `string` |  | no | |
 | <a name="availability_zone"></a> [availability_zone](#input\_availability\_zone) | The Availability Zone where the IP address of the target is to be registered. | `string` |  | no | |
 
+#### listener
+
+| Name | Description | Type | Default | Required | Example|
+|:------|:------|:------|:------|:------:|:------|
+| <a name="port"></a> [port](#input\_port) | Port on which the load balancer is listening.  | `number` |  | yes | |
+| <a name="ssl_policy"></a> [ssl_policy](#input\_ssl\_policy) | Name of the SSL Policy for the listener. Only for `HTTPS` and `TLS` | `string` |  | no | |
+| <a name="certificate_arn"></a> [certificate_arn](#input\_certificate\_arn) | ARN of the default SSL server certificate. Only for `HTTPS` and `TLS` | `string` |  | no | |
+| <a name="alpn_policy"></a> [alpn_policy](#input\_alpn\_policy) | Name of the Application-Layer Protocol Negotiation (ALPN) policy. Only for `TLS` | `string` |  | no | |
+| <a name="action_type"></a> [action_type](#input\_action\_type) | Type of Default routing action | `string` | `"forward"` | no | |
+| <a name="forward"></a> [forward](#action\_forward) | Forward Route Configurations.<br>(Must define if `action_type` is not set or is set to `forward`) | `map(any)` |  | no | <pre>{<br>   target_groups = {<br>     "alb-target-8080" = {<br>       weight = 70<br>     }<br>     "alb-target-8081" = {<br>       weight = 30<br>     }<br>   }<br>   stickiness = 60<br>} |
+| <a name="redirect"></a> [redirect](#action\_redirect) | Redirect Route Configurations.<br>(Must define if `action_type` is set to `redirect`) | `map(any)` |  | no | <pre>{<br>   port        = "8081"<br>   protocol    = "HTTP"<br>   status_code = "HTTP_301"<br>} |
+| <a name="fixed_response"></a> [fixed_response](#action\_fixed\_response) | Fixed Response Route Configurations.<br>(Must define if `action_type` is set to `fixed_response`) | `map(any)` |  | no | <pre>{<br>   content_type = "text/plain"<br>   message_body = "Fixed message"<br>   status_code = "200"<br>} |
+| <a name="authenticate_cognito"></a> [authenticate_cognito](#action\_authenticate\_cognito) | Cognito Authetication Route Configurations.<br>(Must define if `action_type` is set to `authenticate_cognito`) | `map(any)` |  | no | |
+| <a name="authenticate_oidc"></a> [authenticate_oidc](#action\_authenticate\_oidc) | OIDC Authetication Route Configurations.<br>(Must define if `action_type` is set to `authenticate_oidc`) | `map(any)` |  | no | |
+
+#### action_forward
+
+| Name | Description | Type | Default | Required | Example|
+|:------|:------|:------|:------|:------:|:------|
+| <a name="target_groups"></a> [target_groups](#input\_target\_groups) | Map of 1-5 target group blocks | `map(any)` |  | no | <pre>{<br>   "alb-target-8080" = {<br>     weight = 70<br>   }<br>   "alb-target-8081" = {<br>     weight = 30<br>   }<br>} |
+| <a name="stickiness"></a> [stickiness](#input\_stickiness) | Time period, in seconds, during which requests from a client should be routed to the same target group. | `number` |  | no | |
+
+#### action_redirect
+
+| Name | Description | Type | Default | Required | Example|
+|:------|:------|:------|:------|:------:|:------|
+| <a name="status_code"></a> [status_code](#input\_status\_code) | HTTP redirect code. Either `HTTP_301` or `HTTP_302` | `string` |  | yes | |
+| <a name="path"></a> [path](#input\_path) | Absolute path, starting with the leading "/". | `string` | `"/#{path}"` | no | |
+| <a name="host"></a> [host](#input\_host) | Hostname | `string` | `"#{host}"` | no | |
+| <a name="port"></a> [port](#input\_port) | Port | `number` | `"#{port}"` | no | |
+| <a name="protocol"></a> [protocol](#input\_protocol) | Protocol | `string` | `"#{protocol}"` | no | |
+| <a name="query"></a> [query](#input\_query) | Query parameters, URL-encoded when necessary, but not percent-encoded. | `string` | `"#{query}"` | no | |
+
+#### action_fixed_response
+
+| Name | Description | Type | Default | Required | Example|
+|:------|:------|:------|:------|:------:|:------|
+| <a name="content_type"></a> [content_type](#input\_content\_type) | Content type | `string` |  | yes | |
+| <a name="message_body"></a> [message_body](#input\_message\_body) | Message body | `string` |  | no | |
+| <a name="status_code"></a> [status_code](#input\_status\_code) | HTTP response code | `string` |  | no | |
+
+#### action_authenticate_cognito
+
+| Name | Description | Type | Default | Required | Example|
+|:------|:------|:------|:------|:------:|:------|
+| <a name="user_pool_arn"></a> [user_pool_arn](#input\_user\_pool\_arn) | ARN of the Cognito user pool | `string` |  | yes | |
+| <a name="user_pool_client_id"></a> [user_pool_client_id](#input\_user\_pool\_client\_id) | ID of the Cognito user pool client. | `string` |  | yes | |
+| <a name="user_pool_domain"></a> [user_pool_domain](#input\_user\_pool\_domain) | Domain prefix or fully-qualified domain name of the Cognito user pool. | `string` |  | yes | |
+| <a name="authentication_request_extra_params"></a> [authentication_request_extra_params](#input\_authentication\_request\_extra\_params) | Query parameters to include in the redirect request to the authorization endpoint. | `map(string)` |  | no | |
+| <a name="on_unauthenticated_request"></a> [on_unauthenticated_request](#input\_on\_unauthenticated\_request) | Behavior if the user is not authenticated. | `string` |  | no | |
+| <a name="scope"></a> [scope](#input\_scope) | Set of user claims to be requested from the IdP. | `set(string)` |  | no | |
+| <a name="session_cookie_name"></a> [session_cookie_name](#input\_session\_cookie\_name) | Name of the cookie used to maintain session information. | `string` |  | no | |
+| <a name="session_timeout"></a> [session_timeout](#input\_session\_timeout) | Maximum duration of the authentication session, in seconds. | `number` |  | no | |
+
+#### action_authenticate_oidc
+
+| Name | Description | Type | Default | Required | Example|
+|:------|:------|:------|:------|:------:|:------|
+| <a name="issuer"></a> [issuer](#input\_issuer) | OIDC issuer identifier of the IdP. | `string` |  | yes | |
+| <a name="authorization_endpoint"></a> [authorization_endpoint](#input\_authorization\_endpoint) | Authorization endpoint of the IdP. | `string` |  | yes | |
+| <a name="client_id"></a> [client_id](#input\_client\_id) | OAuth 2.0 client identifier | `string` |  | yes | |
+| <a name="client_secret"></a> [client_secret](#input\_client\_secret) | OAuth 2.0 client secret | `string` |  | yes | |
+| <a name="token_endpoint"></a> [token_endpoint](#input\_token\_endpoint) | Token endpoint of the IdP | `string` |  | yes | |
+| <a name="user_info_endpoint"></a> [user_info_endpoint](#input\_user\_info\_endpoint) | User info endpoint of the IdP | `string` |  | yes | |
+| <a name="authentication_request_extra_params"></a> [authentication_request_extra_params](#input\_authentication\_request\_extra\_params) | Query parameters to include in the redirect request to the authorization endpoint. | `map(string)` |  | no | |
+| <a name="on_unauthenticated_request"></a> [on_unauthenticated_request](#input\_on\_unauthenticated\_request) | Behavior if the user is not authenticated. | `string` |  | no | |
+| <a name="scope"></a> [scope](#input\_scope) | Set of user claims to be requested from the IdP | `set(string)` |  | no | |
+| <a name="session_cookie_name"></a> [session_cookie_name](#input\_session\_cookie\_name) | Name of the cookie used to maintain session information. | `string` |  | no | |
+| <a name="session_timeout"></a> [session_timeout](#input\_session\_timeout) | Maximum duration of the authentication session, in seconds. | `number` |  | no | |
+
 ## Outputs
 
 | Name | Type | Description |
@@ -178,6 +249,8 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="zone_id"></a> [zone_id](#output\_zone\_id) | `string` | The canonical hosted zone ID of the load balancer |
 | <a name="sg_id"></a> [sg_id](#output\_sg\_id) | `string` | The Security Group ID associated to ALB |
 | <a name="target_groups"></a> [target_groups](#output\_target\_groups) | `map(string)` | The target Groups' ARN |
+| <a name="listeners"></a> [listeners](#output\_listeners) | `map(string)` | The Listeners' ARN for ALB/NLB |
+| <a name="gateway_listener"></a> [gateway_listener](#output\_gateway\_listener) | `string` | Listener ARN for Gateway Load Balancer |
 
 ## Authors
 

@@ -26,4 +26,13 @@ locals {
                                         { "function_details" = split(":", target.target_id) }, 
                                         target) if target.tg_type == "lambda" }
 
+        ## Load Balancer Plain Listeners (For `HTTP` if ALB, For `TCP`, `UDP` and `TCP_UDP` if NLB)
+        listeners = merge(flatten([for protocol, value in var.listeners: 
+                                        [ for listener in value: 
+                                                {format("%s.%s", upper(protocol), listener.port) = merge(listener, 
+                                                                                                         { "protocol" = upper(protocol) })} 
+                                                        ] if contains([ "HTTP", "TCP", "UDP", "TCP_UDP", "HTTPS", "TLS" ], upper(protocol))])...)
+        
+
+
 }

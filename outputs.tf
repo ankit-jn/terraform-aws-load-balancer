@@ -25,3 +25,14 @@ output "target_groups" {
     description = "The target Groups' ARN"
     value       = {for tg in aws_lb_target_group.this: tg.name => tg.arn}
 }
+
+output "listeners" {
+    description = "The Listeners' ARN"
+    value       = { for listener in aws_lb_listener.this: 
+                        format("%s.%s", listener.protocol, listener.port) => listener.arn }
+}
+
+output "gateway_listener" {
+    description = "Listener ARN for Gateway Load Balancer"
+    value       = try(aws_lb_listener.gateway[0].arn, "")
+}

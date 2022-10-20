@@ -262,6 +262,76 @@ targets: List of Targets to be registered with the target Group where each entry
     port: (Optional) Port on which target receives the traffic
     availability_zone: (Optional) The Availability Zone where the IP address of the target is to be registered.
 EOF
-    type = list(any)
+    # type = list(any)
     default = []
+}
+
+variable "listeners" {
+    description = <<EOF
+Application/Network Load Balancer Listeners, where
+MAP Key: Load Balancer Protocol [`HTTP`, `HTTPS`, `TCP`, `UDP`, `TCP_UDP`, `TLS`]
+Map Value: List of Listeners where each entry of the list represent the listener configuration
+    port: Port on which the load balancer is listening. 
+    ssl_policy: (Optional) Name of the SSL Policy for the listener. Only for `HTTPS` and `TLS`
+    certificate_arn: (Optional) ARN of the default SSL server certificate. Only for `HTTPS` and `TLS`
+    alpn_policy: (Optional) Name of the Application-Layer Protocol Negotiation (ALPN) policy. Only for `TLS`
+    action_type: (Optional, default `forward`) Type of Default routing action.
+    forward: (Must define if `action_type` is not set or is set to `forward`) Forward Route Configurations
+        target_groups: Map of 1-5 target group blocks
+            name: (Required) Name of the target group.
+            weight: (Optional) Weight. The range is 0 to 999.
+        stickiness: (required only if need to enable stickiness) Time period, in seconds, during which requests from a client should be routed to the same target group.
+
+    redirect: (Must define if `action_type` is set to `redirect`) Redirect Route Configurations
+        status_code: (Required) HTTP redirect code.
+        path: (Optional) Absolute path, starting with the leading "/".
+        host: (Optional) Hostname.
+        port: (Optional) Port.
+        protocol: (Optional) Protocol.
+        query: (Optional) Query parameters, URL-encoded when necessary, but not percent-encoded.
+        
+    fixed_response: (Must define if `action_type` is set to `fixed_response`) Fixed Response Route Configurations
+        content_type: (Required) Content type
+        message_body: (Optional) Message body.
+        status_code: (Optional) HTTP response code. 
+
+    authenticate_cognito: (Must define if `action_type` is set to `authenticate_cognito`) Cognito Authetication Route Configurations
+        user_pool_arn: (Required) ARN of the Cognito user pool.
+        user_pool_client_id: (Required) ID of the Cognito user pool client.
+        user_pool_domain: (Required) Domain prefix or fully-qualified domain name of the Cognito user pool.
+        authentication_request_extra_params: (Optional) Query parameters to include in the redirect request to the authorization endpoint.
+        on_unauthenticated_request: (Optional) Behavior if the user is not authenticated.
+        scope: (Optional) Set of user claims to be requested from the IdP.
+        session_cookie_name: (Optional) Name of the cookie used to maintain session information.
+        session_timeout: (Optional) Maximum duration of the authentication session, in seconds.
+
+    authenticate_oidc: (Must define if `action_type` is set to `authenticate_oidc`) OIDC Authetication Route Configurations
+        issuer: (Required) OIDC issuer identifier of the IdP.
+        authorization_endpoint: (Required) Authorization endpoint of the IdP.
+        client_id: (Required) OAuth 2.0 client identifier.
+        client_secret: (Required) OAuth 2.0 client secret.
+        token_endpoint: (Required) Token endpoint of the IdP.
+        user_info_endpoint: (Required) User info endpoint of the IdP.
+        authentication_request_extra_params: (Optional) Query parameters to include in the redirect request to the authorization endpoint.
+        on_unauthenticated_request:  (Optional) Behavior if the user is not authenticated.
+        scope: (Optional) Set of user claims to be requested from the IdP.
+        session_cookie_name: (Optional) Name of the cookie used to maintain session information.
+        session_timeout: (Optional) Maximum duration of the authentication session, in seconds.
+
+    tags: (Optional) A map of tags to assign to the resource. 
+
+EOF
+    default     = {}
+}
+
+variable "default_ssl_policy" {
+    description = "The default SSL Policy for the listeners with Protocol `HTTPS` and `TLS`"
+    type = string
+    default = "ELBSecurityPolicy-2016-08"
+}
+
+variable "gateway_listener" {
+    description = "The listener for Gateway Load Balancer"
+    type        = map(any)
+    default     = {}
 }
