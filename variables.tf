@@ -266,6 +266,12 @@ EOF
     default = []
 }
 
+variable "default_ssl_policy" {
+    description = "The default SSL Policy for the listeners with Protocol `HTTPS` and `TLS`"
+    type = string
+    default = "ELBSecurityPolicy-2016-08"
+}
+
 variable "listeners" {
     description = <<EOF
 Application/Network Load Balancer Listeners, where
@@ -324,10 +330,10 @@ EOF
     default     = {}
 }
 
-variable "default_ssl_policy" {
-    description = "The default SSL Policy for the listeners with Protocol `HTTPS` and `TLS`"
-    type = string
-    default = "ELBSecurityPolicy-2016-08"
+variable "gateway_listener" {
+    description = "Listener Configuration for Gateway Load Balancer"
+    type = map(string)
+    default = {}
 }
 
 variable "listener_rules" {

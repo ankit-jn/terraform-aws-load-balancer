@@ -113,7 +113,9 @@ resource aws_lb_listener "this" {
 
 ## Listener for Gateway Load Balancer
 resource aws_lb_listener "gateway" {
-    count = local.gateway ? 1 : 0
+    count = (local.gateway && 
+                (length(var.target_groups) > 0) &&
+                 (can(var.gateway_listener.target_group))) ? 1 : 0
 
     load_balancer_arn = aws_lb.gateway[0].arn
 
