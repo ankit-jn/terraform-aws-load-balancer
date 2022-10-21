@@ -7,13 +7,18 @@ This module features the following components to be provisioned with different c
 
 - Load Balancer [[aws_lb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb)]
     - Application Load Balancer
-    - Gateway Load Balancer
     - Network Load Balancer
+    - Gateway Load Balancer
 - AWS Elastic IP Adddress [[aws_eip](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/eip)]
     - To be used by Subnet Mappings (Applicable in case NLB only)
-- AWS Security Group [[aws_security_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group)]
+- Target Group [[aws_lb_target_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group)]
+- Target Registration [[aws_lb_target_group_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_target_group_attachment)]
+- Lambda Permission [[aws_lambda_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission)]
+- Load Balancer Listener [[aws_lb_listener](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener)]
+- Load Balancer Listener Rule [[aws_lb_listener_rule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb_listener_rule)]
+- Security Group [[aws_security_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group)]
     - To be associated with Load Balancer (Applicable in case of ALB only)
-- AWS Security Group Rules [[aws_security_group_rule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule)]
+- Security Group Rules [[aws_security_group_rule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule)]
 
 ## Requirements
 
