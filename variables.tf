@@ -343,8 +343,9 @@ List of Application/Network Load Balancer Listener Rules where each entry will b
 listener_protocol: Listener Reference- The Load Balancer Protocol 
 listener_port: Listener Reference- The Load Balancer Port
 priority: Priority of Rule
-actions: The Map of Routing Actions (at least one action is required): forward, redirect, fixed-response, authenticate_cognito, authenticate_oidc
-         Structure is same as defined in property - `listeners` 
+actions: The Map of Routing Actions (at least one action is required): forward, weighted_forward, redirect, fixed_response, authenticate_cognito, authenticate_oidc
+         Structure is same for actions as defined in property - `listeners` except for `forward` 
+         In case of `forward` action map, just specify `target_group` as a key pointing to target group name
 conditions: Map of following Conditions used with the Rule. At least one condition is required.
     host_header: (Optional) Contains a single values item which is a list of host header patterns to match
     http_header: (Optional) HTTP headers to match. Map of keys `header_name`, `header_values` 

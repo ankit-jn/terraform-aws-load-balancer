@@ -9,16 +9,26 @@ resource aws_lb_listener_rule "this" {
     ## PREPARE ACTIONS
     ###########################
 
-    ## Action: forward
+    ## Action: forward (For a single target group)
     dynamic "action" {
         for_each = length(keys(lookup(each.value.actions, "forward", {}))) > 0 ? [1] : []
+
+        content {
+            type = "forward"
+            target_group_arn = aws_lb_target_group.this[each.value.actions.forward.target_group].arn
+        }
+    }
+
+    ## Action: forward (For multiple target groups with weights assigned)
+    dynamic "action" {
+        for_each = length(keys(lookup(each.value.actions, "weighted_forward", {}))) > 0 ? [1] : []
 
         content {
             type = "forward"
 
             forward {
                 dynamic "target_group" {
-                    for_each = each.value.actions.forward.target_groups
+                    for_each = each.value.actions.weighted_forward.target_groups
 
                     content {
                         arn = aws_lb_target_group.this[target_group.key].arn
@@ -27,10 +37,10 @@ resource aws_lb_listener_rule "this" {
                 }
 
                 dynamic "stickiness" {
-                    for_each = can(each.value.actions.forward.stickiness) ? [1] : []
+                    for_each = can(each.value.actions.weighted_forward.stickiness) ? [1] : []
 
                     content {
-                      duration = each.value.actions.forward.stickiness
+                      duration = each.value.actions.weighted_forward.stickiness
                       enabled = true
                     }
 
