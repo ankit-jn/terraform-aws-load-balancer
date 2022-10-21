@@ -279,7 +279,8 @@ MAP Key: Load Balancer Protocol [`HTTP`, `HTTPS`, `TCP`, `UDP`, `TCP_UDP`, `TLS`
 Map Value: List of Listeners where each entry of the list represent the listener configuration
     port: Port on which the load balancer is listening. 
     ssl_policy: (Optional) Name of the SSL Policy for the listener. Only for `HTTPS` and `TLS`
-    certificate_arn: (Optional) ARN of the default SSL server certificate. Only for `HTTPS` and `TLS`
+    certificate_domain: (Optional) Fully Qualified domain for which Certificate status in ACM is `ISSUED`. Only for `HTTPS` and `TLS`
+    certificate_arn: (Optional) ARN of the default SSL server certificate. Only for `HTTPS` and `TLS`. It will have preference over `certificate_domain`
     alpn_policy: (Optional) Name of the Application-Layer Protocol Negotiation (ALPN) policy. Only for `TLS`
     action_type: (Optional, default `forward`) Type of Default routing action.
     forward: (Must define if `action_type` is not set or is set to `forward`) Forward Route Configurations

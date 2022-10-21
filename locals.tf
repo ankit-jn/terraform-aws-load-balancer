@@ -33,6 +33,12 @@ locals {
                                                                                                          { "protocol" = upper(protocol) })} 
                                                         ] if contains([ "HTTP", "TCP", "UDP", "TCP_UDP", "HTTPS", "TLS" ], upper(protocol))])...)
                 
+        certs = merge(flatten([for protocol, value in var.listeners: 
+                                [ for listener in value: 
+                                        {format("%s", listener.certificate_domain) = listener.certificate_domain} 
+                                            if (lookup(listener, "certificate_domain", "") != "")
+                                                ] if contains([ "HTTPS", "TLS" ], upper(protocol))])...)
+
         listener_rules = merge(flatten([for rule in var.listener_rules: 
                                         { format("%s.%s.%s", upper(rule.listener_protocol), rule.listener_port, rule.priority) = merge(
                                         {"listener" = format("%s.%s", upper(rule.listener_protocol), rule.listener_port)},

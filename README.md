@@ -180,7 +180,8 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 |:------|:------|:------|:------|:------:|:------|
 | <a name="port"></a> [port](#input\_port) | Port on which the load balancer is listening.  | `number` |  | yes | |
 | <a name="ssl_policy"></a> [ssl_policy](#input\_ssl\_policy) | Name of the SSL Policy for the listener. Only for `HTTPS` and `TLS` | `string` |  | no | |
-| <a name="certificate_arn"></a> [certificate_arn](#input\_certificate\_arn) | ARN of the default SSL server certificate. Only for `HTTPS` and `TLS` | `string` |  | no | |
+| <a name="certificate_domain"></a> [certificate_domain](#input\_certificate\_domain) | Fully Qualified domain for which Certificate status in ACM is `ISSUED`. Only for `HTTPS` and `TLS` | `string` |  | no | |
+| <a name="certificate_arn"></a> [certificate_arn](#input\_certificate\_arn) | ARN of the default SSL server certificate. <br>Only for `HTTPS` and `TLS`<br>This property will take preference over `certificate_domain` | `string` |  | no | |
 | <a name="alpn_policy"></a> [alpn_policy](#input\_alpn\_policy) | Name of the Application-Layer Protocol Negotiation (ALPN) policy. Only for `TLS` | `string` |  | no | |
 | <a name="action_type"></a> [action_type](#input\_action\_type) | Type of Default routing action | `string` | `"forward"` | no | |
 | <a name="forward"></a> [forward](#action\_forward) | Forward Route Configurations.<br>(Must define if `action_type` is not set or is set to `forward`) | `map(any)` |  | no | <pre>{<br>   target_groups = {<br>     "alb-target-8080" = {<br>       weight = 70<br>     }<br>     "alb-target-8081" = {<br>       weight = 30<br>     }<br>   }<br>   stickiness = 60<br>} |

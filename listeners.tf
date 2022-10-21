@@ -1,3 +1,12 @@
+data aws_acm_certificate "this" {
+    for_each = local.certs
+
+    domain = each.value
+    
+    statuses = ["ISSUED"]
+    most_recent = true
+}
+
 ## Load Balancer Listeners
 resource aws_lb_listener "this" {
 
@@ -9,7 +18,9 @@ resource aws_lb_listener "this" {
     protocol          = each.value.protocol
 
     ssl_policy        = contains(["HTTPS", "TLS"], each.value.protocol) ? lookup(each.value, "ssl_policy", var.default_ssl_policy) : null
-    certificate_arn   = contains(["HTTPS", "TLS"], each.value.protocol) ? each.value.certificate_arn : null
+    certificate_arn   = contains(["HTTPS", "TLS"], each.value.protocol) ? (
+                                (lookup(each.value, "certificate_arn", "") != "") ? each.value.certificate_arn : (
+                                                                                    data.aws_acm_certificate.this[each.value.certificate_domain].arn)) : null
     alpn_policy       = (each.value.protocol == "TLS") ? lookup(each.value, "alpn_policy", null) : null
 
     default_action {
