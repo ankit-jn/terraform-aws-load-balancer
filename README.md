@@ -85,26 +85,26 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 #### Network/Gateway Load Balancer Specific Properties
 ---
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="enable_cross_zone_load_balancing"></a> [enable_cross_zone_load_balancing](#input\_enable\_cross\_zone\_load\_balancing) | Flag to decide if cross-zone load balancing of the load balancer will be enabled | `bool` | `false` | no | |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="enable_cross_zone_load_balancing"></a> [enable_cross_zone_load_balancing](#input\_enable\_cross\_zone\_load\_balancing) | Flag to decide if cross-zone load balancing of the load balancer will be enabled | `bool` | `false` | no |
 
 ## Nested Configuration Maps:  
 
 #### access_logs
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="bucket"></a> [bucket](#input\_bucket) | The S3 bucket name to store the logs in | `string` |  | yes | |
-| <a name="prefix"></a> [prefix](#input\_prefix) | The S3 bucket prefix. Logs are stored in the root if not configured. | `string` |  | no | |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="bucket"></a> [bucket](#input\_bucket) | The S3 bucket name to store the logs in | `string` |  | yes |
+| <a name="prefix"></a> [prefix](#input\_prefix) | The S3 bucket prefix. Logs are stored in the root if not configured. | `string` |  | no |
 
 #### subnet_mappings
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="subnet_id"></a> [subnet_id](#input\_subnet\_id) | ID of the subnet of which to attach to the load balancer | `string` |  | yes | |
-| <a name="create_eip"></a> [create_eip](#input\_create\_eip) | Flag to decide if new Elastic IP address allocation is required | `bool` | `false` | no | |
-| <a name="allocation_id"></a> [allocation_id](#input\_allocation\_id) | The allocation ID of the Elastic IP address. It will be ignored if `create_eip` is set `true` | `string` |  | no | |
-| <a name="private_ipv4_address"></a> [private_ipv4_address](#input\_private\_ipv4\_address) | A private ipv4 address within the subnet to assign to the internal-facing load balancer.  | `string` |  | no | |
-| <a name="ipv6_address"></a> [ipv6_address](#input\_ipv6\_address) | An ipv6 address within the subnet to assign to the internet-facing load balancer.  | `string` |  | no | |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="subnet_id"></a> [subnet_id](#input\_subnet\_id) | ID of the subnet of which to attach to the load balancer | `string` |  | yes |
+| <a name="create_eip"></a> [create_eip](#input\_create\_eip) | Flag to decide if new Elastic IP address allocation is required | `bool` | `false` | no |
+| <a name="allocation_id"></a> [allocation_id](#input\_allocation\_id) | The allocation ID of the Elastic IP address. It will be ignored if `create_eip` is set `true` | `string` |  | no |
+| <a name="private_ipv4_address"></a> [private_ipv4_address](#input\_private\_ipv4\_address) | A private ipv4 address within the subnet to assign to the internal-facing load balancer.  | `string` |  | no |
+| <a name="ipv6_address"></a> [ipv6_address](#input\_ipv6\_address) | An ipv6 address within the subnet to assign to the internet-facing load balancer.  | `string` |  | no |
 
 #### sg_rules [ Ingress / Egress ]
 
@@ -113,17 +113,17 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 - `source_security_group_id` Cannot be specified with `cidr_blocks`, `ipv6_cidr_blocks` or `self`.
 - `self` Cannot be specified with `cidr_blocks`, `ipv6_cidr_blocks` or `source_security_group_id`.
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="rule_name"></a> [rule_name](#input\_rule\_name) | The name of the Rule (Used for terraform perspective to maintain unicity) | `string` |  | yes | |
-| <a name="description"></a> [description](#input\_description) | Description of the rule. | `string` |  | yes | |
-| <a name="from_port"></a> [from_port](#input\_from\_port) | Start port (or ICMP type number if protocol is "icmp" or "icmpv6"). | `number` |  | yes | |
-| <a name="to_port"></a> [to_port](#input\_to\_port) | End port (or ICMP code if protocol is "icmp"). | `number` |  | yes | |
-| <a name="protocol"></a> [protocol](#input\_protocol) | Protocol. If not icmp, icmpv6, tcp, udp, or all use the protocol number | `string | number` |  | yes | |
-| <a name="self"></a> [self](#input\_self) | Whether the security group itself will be added as a source to this ingress rule.  | `bool` |  | no | |
-| <a name="cidr_blocks"></a> [cidr_blocks](#input\_cidr\_blocks) | List of IPv4 CIDR blocks | `list(string)` |  | no | |
-| <a name="ipv6_cidr_blocks"></a> [ipv6_cidr_blocks](#input\_ipv6\_cidr\_blocks) | List of IPv6 CIDR blocks. | `list(string)` |  | no | |
-| <a name="source_security_group_id"></a> [source_security_group_id](#input\_source\_security\_group\_id) | Security group id to allow access to/from | `string` |  | no | |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="rule_name"></a> [rule_name](#input\_rule\_name) | The name of the Rule (Used for terraform perspective to maintain unicity) | `string` |  | yes |
+| <a name="description"></a> [description](#input\_description) | Description of the rule. | `string` |  | yes |
+| <a name="from_port"></a> [from_port](#input\_from\_port) | Start port (or ICMP type number if protocol is "icmp" or "icmpv6"). | `number` |  | yes |
+| <a name="to_port"></a> [to_port](#input\_to\_port) | End port (or ICMP code if protocol is "icmp"). | `number` |  | yes |
+| <a name="protocol"></a> [protocol](#input\_protocol) | Protocol. If not icmp, icmpv6, tcp, udp, or all use the protocol number | `string \| number` |  | yes |
+| <a name="self"></a> [self](#input\_self) | Whether the security group itself will be added as a source to this ingress rule.  | `bool` |  | no |
+| <a name="cidr_blocks"></a> [cidr_blocks](#input\_cidr\_blocks) | List of IPv4 CIDR blocks | `list(string)` |  | no |
+| <a name="ipv6_cidr_blocks"></a> [ipv6_cidr_blocks](#input\_ipv6\_cidr\_blocks) | List of IPv6 CIDR blocks. | `list(string)` |  | no |
+| <a name="source_security_group_id"></a> [source_security_group_id](#input\_source\_security\_group\_id) | Security group id to allow access to/from | `string` |  | no |
 
 #### target_group
 
@@ -149,35 +149,35 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 
 - At least one property needs to be defined
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="enabled"></a> [enabled](#input\_enabled) | Whether health checks are enabled | `bool` | `true` | no | |
-| <a name="protocol"></a> [protocol](#input\_protocol) | Protocol to use to connect with the target. It is not required in `target_type` is `lambda` | `string` | `"HTTP"` | no | |
-| <a name="path"></a> [path](#input\_path) | Destination for the health check request. | `string` |  | no | |
-| <a name="port"></a> [port](#input\_port) | Port to use to connect with the target. | `string` | `"traffic-port"` | no | |
-| <a name="interval"></a> [interval](#input\_interval) | Approximate amount of time, in seconds, between health checks of an individual target. | `number` | `30` | no | |
-| <a name="healthy_threshold"></a> [healthy_threshold](#input\_healthy\_threshold) | Number of consecutive health checks successes required before considering an unhealthy target healthy. | `number` | `3` | no | |
-| <a name="unhealthy_threshold"></a> [unhealthy_threshold](#input\_unhealthy\_threshold) | Number of consecutive health check failures required before considering the target unhealthy.<br>It should be the same as `healthy_threshold` if it is NLB. | `number` | `3` | no | |
-| <a name="timeout"></a> [timeout](#input\_timeout) | Amount of time, in seconds, during which no response means a failed health check. | `number` |  | no | |
-| <a name="matcher"></a> [matcher](#input\_matcher) | Response codes to use when checking for a healthy responses from a target. Only applicable with ALB. | `string` |  | no | |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="enabled"></a> [enabled](#input\_enabled) | Whether health checks are enabled | `bool` | `true` | no |
+| <a name="protocol"></a> [protocol](#input\_protocol) | Protocol to use to connect with the target. It is not required in `target_type` is `lambda` | `string` | `"HTTP"` | no |
+| <a name="path"></a> [path](#input\_path) | Destination for the health check request. | `string` |  | no |
+| <a name="port"></a> [port](#input\_port) | Port to use to connect with the target. | `string` | `"traffic-port"` | no |
+| <a name="interval"></a> [interval](#input\_interval) | Approximate amount of time, in seconds, between health checks of an individual target. | `number` | `30` | no |
+| <a name="healthy_threshold"></a> [healthy_threshold](#input\_healthy\_threshold) | Number of consecutive health checks successes required before considering an unhealthy target healthy. | `number` | `3` | no |
+| <a name="unhealthy_threshold"></a> [unhealthy_threshold](#input\_unhealthy\_threshold) | Number of consecutive health check failures required before considering the target unhealthy.<br>It should be the same as `healthy_threshold` if it is NLB. | `number` | `3` | no |
+| <a name="timeout"></a> [timeout](#input\_timeout) | Amount of time, in seconds, during which no response means a failed health check. | `number` |  | no |
+| <a name="matcher"></a> [matcher](#input\_matcher) | Response codes to use when checking for a healthy responses from a target. Only applicable with ALB. | `string` |  | no |
 
 #### stickiness
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="enabled"></a> [enabled](#input\_enabled) | Boolean to enable / disable stickiness | `bool` | `true` | no | |
-| <a name="type"></a> [type](#input\_type) | The type of sticky sessions. | `string` |  | yes | |
-| <a name="cookie_name"></a> [cookie_name](#input\_cookie_name) | Name of the application based cookie. Only Valid if stickiness `type` is `app_cookie` | `string` |  | no | |
-| <a name="cookie_duration"></a> [cookie_duration](#input\_cookie_duration) | The time period, in seconds, during which requests from a client should be routed to the same target. Only Valid if stickiness `type` is `lb_cookie` | `number` |  | no | |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="enabled"></a> [enabled](#input\_enabled) | Boolean to enable / disable stickiness | `bool` | `true` | no |
+| <a name="type"></a> [type](#input\_type) | The type of sticky sessions. | `string` |  | yes |
+| <a name="cookie_name"></a> [cookie_name](#input\_cookie_name) | Name of the application based cookie. Only Valid if stickiness `type` is `app_cookie` | `string` |  | no |
+| <a name="cookie_duration"></a> [cookie_duration](#input\_cookie_duration) | The time period, in seconds, during which requests from a client should be routed to the same target. Only Valid if stickiness `type` is `lb_cookie` | `number` |  | no |
 
 #### targets
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="name"></a> [name](#input\_name) | Unique identifier within the list, for Terraform perspective | `string` |  | yes | |
-| <a name="target_id"></a> [target_id](#input\_target_id) | ID of the target to be registered; Instance ID, COntainer ID, or Lambda ARN, ARN of another ALB | `string` |  | yes | |
-| <a name="port"></a> [port](#input\_port) | Port on which target receives the traffic | `string` |  | no | |
-| <a name="availability_zone"></a> [availability_zone](#input\_availability\_zone) | The Availability Zone where the IP address of the target is to be registered. | `string` |  | no | |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="name"></a> [name](#input\_name) | Unique identifier within the list, for Terraform perspective | `string` |  | yes |
+| <a name="target_id"></a> [target_id](#input\_target_id) | ID of the target to be registered; Instance ID, COntainer ID, or Lambda ARN, ARN of another ALB | `string` |  | yes |
+| <a name="port"></a> [port](#input\_port) | Port on which target receives the traffic | `string` |  | no |
+| <a name="availability_zone"></a> [availability_zone](#input\_availability\_zone) | The Availability Zone where the IP address of the target is to be registered. | `string` |  | no |
 
 #### listener
 
@@ -204,61 +204,61 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 
 #### action_redirect
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="status_code"></a> [status_code](#input\_status\_code) | HTTP redirect code. Either `HTTP_301` or `HTTP_302` | `string` |  | yes | |
-| <a name="path"></a> [path](#input\_path) | Absolute path, starting with the leading "/". | `string` | `"/#{path}"` | no | |
-| <a name="host"></a> [host](#input\_host) | Hostname | `string` | `"#{host}"` | no | |
-| <a name="port"></a> [port](#input\_port) | Port | `number` | `"#{port}"` | no | |
-| <a name="protocol"></a> [protocol](#input\_protocol) | Protocol | `string` | `"#{protocol}"` | no | |
-| <a name="query"></a> [query](#input\_query) | Query parameters, URL-encoded when necessary, but not percent-encoded. | `string` | `"#{query}"` | no | |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="status_code"></a> [status_code](#input\_status\_code) | HTTP redirect code. Either `HTTP_301` or `HTTP_302` | `string` |  | yes |
+| <a name="path"></a> [path](#input\_path) | Absolute path, starting with the leading "/". | `string` | `"/#{path}"` | no |
+| <a name="host"></a> [host](#input\_host) | Hostname | `string` | `"#{host}"` | no |
+| <a name="port"></a> [port](#input\_port) | Port | `number` | `"#{port}"` | no |
+| <a name="protocol"></a> [protocol](#input\_protocol) | Protocol | `string` | `"#{protocol}"` | no |
+| <a name="query"></a> [query](#input\_query) | Query parameters, URL-encoded when necessary, but not percent-encoded. | `string` | `"#{query}"` | no |
 
 #### action_fixed_response
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="content_type"></a> [content_type](#input\_content\_type) | Content type | `string` |  | yes | |
-| <a name="message_body"></a> [message_body](#input\_message\_body) | Message body | `string` |  | no | |
-| <a name="status_code"></a> [status_code](#input\_status\_code) | HTTP response code | `string` |  | no | |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="content_type"></a> [content_type](#input\_content\_type) | Content type | `string` |  | yes |
+| <a name="message_body"></a> [message_body](#input\_message\_body) | Message body | `string` |  | no |
+| <a name="status_code"></a> [status_code](#input\_status\_code) | HTTP response code | `string` |  | no |
 
 #### action_authenticate_cognito
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="user_pool_arn"></a> [user_pool_arn](#input\_user\_pool\_arn) | ARN of the Cognito user pool | `string` |  | yes | |
-| <a name="user_pool_client_id"></a> [user_pool_client_id](#input\_user\_pool\_client\_id) | ID of the Cognito user pool client. | `string` |  | yes | |
-| <a name="user_pool_domain"></a> [user_pool_domain](#input\_user\_pool\_domain) | Domain prefix or fully-qualified domain name of the Cognito user pool. | `string` |  | yes | |
-| <a name="authentication_request_extra_params"></a> [authentication_request_extra_params](#input\_authentication\_request\_extra\_params) | Query parameters to include in the redirect request to the authorization endpoint. | `map(string)` |  | no | |
-| <a name="on_unauthenticated_request"></a> [on_unauthenticated_request](#input\_on\_unauthenticated\_request) | Behavior if the user is not authenticated. | `string` |  | no | |
-| <a name="scope"></a> [scope](#input\_scope) | Set of user claims to be requested from the IdP. | `set(string)` |  | no | |
-| <a name="session_cookie_name"></a> [session_cookie_name](#input\_session\_cookie\_name) | Name of the cookie used to maintain session information. | `string` |  | no | |
-| <a name="session_timeout"></a> [session_timeout](#input\_session\_timeout) | Maximum duration of the authentication session, in seconds. | `number` |  | no | |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="user_pool_arn"></a> [user_pool_arn](#input\_user\_pool\_arn) | ARN of the Cognito user pool | `string` |  | yes |
+| <a name="user_pool_client_id"></a> [user_pool_client_id](#input\_user\_pool\_client\_id) | ID of the Cognito user pool client. | `string` |  | yes |
+| <a name="user_pool_domain"></a> [user_pool_domain](#input\_user\_pool\_domain) | Domain prefix or fully-qualified domain name of the Cognito user pool. | `string` |  | yes |
+| <a name="authentication_request_extra_params"></a> [authentication_request_extra_params](#input\_authentication\_request\_extra\_params) | Query parameters to include in the redirect request to the authorization endpoint. | `map(string)` |  | no |
+| <a name="on_unauthenticated_request"></a> [on_unauthenticated_request](#input\_on\_unauthenticated\_request) | Behavior if the user is not authenticated. | `string` |  | no |
+| <a name="scope"></a> [scope](#input\_scope) | Set of user claims to be requested from the IdP. | `set(string)` |  | no |
+| <a name="session_cookie_name"></a> [session_cookie_name](#input\_session\_cookie\_name) | Name of the cookie used to maintain session information. | `string` |  | no |
+| <a name="session_timeout"></a> [session_timeout](#input\_session\_timeout) | Maximum duration of the authentication session, in seconds. | `number` |  | no |
 
 #### action_authenticate_oidc
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="issuer"></a> [issuer](#input\_issuer) | OIDC issuer identifier of the IdP. | `string` |  | yes | |
-| <a name="authorization_endpoint"></a> [authorization_endpoint](#input\_authorization\_endpoint) | Authorization endpoint of the IdP. | `string` |  | yes | |
-| <a name="client_id"></a> [client_id](#input\_client\_id) | OAuth 2.0 client identifier | `string` |  | yes | |
-| <a name="client_secret"></a> [client_secret](#input\_client\_secret) | OAuth 2.0 client secret | `string` |  | yes | |
-| <a name="token_endpoint"></a> [token_endpoint](#input\_token\_endpoint) | Token endpoint of the IdP | `string` |  | yes | |
-| <a name="user_info_endpoint"></a> [user_info_endpoint](#input\_user\_info\_endpoint) | User info endpoint of the IdP | `string` |  | yes | |
-| <a name="authentication_request_extra_params"></a> [authentication_request_extra_params](#input\_authentication\_request\_extra\_params) | Query parameters to include in the redirect request to the authorization endpoint. | `map(string)` |  | no | |
-| <a name="on_unauthenticated_request"></a> [on_unauthenticated_request](#input\_on\_unauthenticated\_request) | Behavior if the user is not authenticated. | `string` |  | no | |
-| <a name="scope"></a> [scope](#input\_scope) | Set of user claims to be requested from the IdP | `set(string)` |  | no | |
-| <a name="session_cookie_name"></a> [session_cookie_name](#input\_session\_cookie\_name) | Name of the cookie used to maintain session information. | `string` |  | no | |
-| <a name="session_timeout"></a> [session_timeout](#input\_session\_timeout) | Maximum duration of the authentication session, in seconds. | `number` |  | no | |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="issuer"></a> [issuer](#input\_issuer) | OIDC issuer identifier of the IdP. | `string` |  | yes |
+| <a name="authorization_endpoint"></a> [authorization_endpoint](#input\_authorization\_endpoint) | Authorization endpoint of the IdP. | `string` |  | yes |
+| <a name="client_id"></a> [client_id](#input\_client\_id) | OAuth 2.0 client identifier | `string` |  | yes |
+| <a name="client_secret"></a> [client_secret](#input\_client\_secret) | OAuth 2.0 client secret | `string` |  | yes |
+| <a name="token_endpoint"></a> [token_endpoint](#input\_token\_endpoint) | Token endpoint of the IdP | `string` |  | yes |
+| <a name="user_info_endpoint"></a> [user_info_endpoint](#input\_user\_info\_endpoint) | User info endpoint of the IdP | `string` |  | yes |
+| <a name="authentication_request_extra_params"></a> [authentication_request_extra_params](#input\_authentication\_request\_extra\_params) | Query parameters to include in the redirect request to the authorization endpoint. | `map(string)` |  | no |
+| <a name="on_unauthenticated_request"></a> [on_unauthenticated_request](#input\_on\_unauthenticated\_request) | Behavior if the user is not authenticated. | `string` |  | no |
+| <a name="scope"></a> [scope](#input\_scope) | Set of user claims to be requested from the IdP | `set(string)` |  | no |
+| <a name="session_cookie_name"></a> [session_cookie_name](#input\_session\_cookie\_name) | Name of the cookie used to maintain session information. | `string` |  | no |
+| <a name="session_timeout"></a> [session_timeout](#input\_session\_timeout) | Maximum duration of the authentication session, in seconds. | `number` |  | no |
 
 #### listener_rule
 
-| Name | Description | Type | Default | Required | Example|
-|:------|:------|:------|:------|:------:|:------|
-| <a name="listener_protocol"></a> [listener_protocol](#input\_listener\_protocol) | Listener Reference- The Load Balancer Protocol  | `string` |  | yes | |
-| <a name="listener_port"></a> [listener_port](#input\_listener\_port) | Listener Reference- The Load Balancer Port | `number` |  | yes | |
-| <a name="priority"></a> [priority](#input\_priority) | Priority of Rule | `number` |  | yes | |
-| <a name="actions"></a> [actions](#input\_actions) | The Map of Routing Actions (at least one action is required):<br>`forward`: It is a map with single property `target_group`<br>[`weighted_forward`](#action_forward)<br>[`redirect`](#action_redirect)<br>[`fixed-response`](#action_fixed_response)<br>[`authenticate_cognito`](#action_authenticate_cognito)<br>[`authenticate_oidc`](#action_authenticate_oidc) | `string` |  | yes | |
-| <a name="conditions"></a> [conditions](#conditions) | Map of Conditions used with the Rule: At least one condition is required. | `map` |  | yes | |
+| Name | Description | Type | Default | Required |
+|:------|:------|:------|:------|:------:|
+| <a name="listener_protocol"></a> [listener_protocol](#input\_listener\_protocol) | Listener Reference- The Load Balancer Protocol  | `string` |  | yes |
+| <a name="listener_port"></a> [listener_port](#input\_listener\_port) | Listener Reference- The Load Balancer Port | `number` |  | yes |
+| <a name="priority"></a> [priority](#input\_priority) | Priority of Rule | `number` |  | yes |
+| <a name="actions"></a> [actions](#input\_actions) | The Map of Routing Actions (at least one action is required):<br>`forward`: It is a map with single property `target_group`<br>[`weighted_forward`](#action_forward)<br>[`redirect`](#action_redirect)<br>[`fixed-response`](#action_fixed_response)<br>[`authenticate_cognito`](#action_authenticate_cognito)<br>[`authenticate_oidc`](#action_authenticate_oidc) | `string` |  | yes |
+| <a name="conditions"></a> [conditions](#conditions) | Map of Conditions used with the Rule: At least one condition is required. | `map` |  | yes |
 
 #### conditions
 
