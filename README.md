@@ -1,8 +1,8 @@
-# ARJ-Stack: AWS Load Balancer Terraform module
+## ARJ-Stack: AWS Load Balancer Terraform module
 
 A Terraform module for configuring AWS Load Balancers
 
-## Resources
+### Resources
 This module features the following components to be provisioned with different combinations:
 
 - Load Balancer [[aws_lb](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lb)]
@@ -20,24 +20,24 @@ This module features the following components to be provisioned with different c
     - To be associated with Load Balancer (Applicable in case of ALB only)
 - Security Group Rules [[aws_security_group_rule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule)]
 
-## Requirements
+### Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.2.5 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.22.0 |
 
-## Providers
+### Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.22.0 |
 
-## Examples
+### Examples
 
 Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-examples/tree/main/aws-load-balancer) for effectively utilizing this module.
 
-## Inputs
+### Inputs
 ---
 
 | Name | Description | Type | Default | Required | Example|
@@ -89,7 +89,7 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 |:------|:------|:------|:------|:------:|
 | <a name="enable_cross_zone_load_balancing"></a> [enable_cross_zone_load_balancing](#input\_enable\_cross\_zone\_load\_balancing) | Flag to decide if cross-zone load balancing of the load balancer will be enabled | `bool` | `false` | no |
 
-## Nested Configuration Maps:  
+### Nested Configuration Maps:  
 
 #### access_logs
 | Name | Description | Type | Default | Required |
@@ -271,7 +271,7 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="query_string"></a> [query_string](#input\_query\_string) | Query strings (key-value pair) to match | `list` |  | yes | <pre>[<br>   {<br>     key = "type"<br>     value = "images"<br>   },<br>   {<br>     key = "location"<br>     value = "asia"<br>   },<br>] |
 | <a name="source_ip"></a> [source_ip](#input\_source_ip) | Contains a single values item which is a list of source IP CIDR notations to match. | `list(string)` |  | no | <pre>[<br>   "xxx.xxx.xxx.xxx/xx",<br>   "xxx.xxx.xxx.xxx/xx"<br>] |
 
-## Outputs
+### Outputs
 
 | Name | Type | Description |
 |:------|:------|:------|
@@ -283,7 +283,7 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="listeners"></a> [listeners](#output\_listeners) | `map(string)` | The Listeners' ARN for ALB/NLB |
 | <a name="gateway_listener"></a> [gateway_listener](#output\_gateway\_listener) | `string` | Listener ARN for Gateway Load Balancer |
 
-## Authors
+### Authors
 
 Module is maintained by [Ankit Jain](https://github.com/ankit-jn) with help from [these professional](https://github.com/arjstack/terraform-aws-load-balancer/graphs/contributors).
 
