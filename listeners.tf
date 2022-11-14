@@ -119,7 +119,10 @@ resource aws_lb_listener "this" {
         }
     }
 
-    tags = merge( { "Name" = each.key }, var.default_tags, lookup(each.value, "tags", {}) )
+    tags = merge( { "Name" = each.key }, 
+                        { "LoadBalancer" = var.name }, 
+                        var.default_tags, 
+                        lookup(each.value, "tags", {}) )
 }
 
 ## Listener for Gateway Load Balancer

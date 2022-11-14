@@ -52,7 +52,8 @@ resource aws_lb_target_group "this" {
         }
     }
 
-    tags = local.gateway ? null : merge( { "Name" = format("%s.%s", var.name, each.key) }, var.default_tags )
+    tags = local.gateway ? null : merge( { "Name" = format("%s.%s", var.name, each.key) }, 
+                                                { "LoadBalancer" = var.name }, var.default_tags )
 
 }
 

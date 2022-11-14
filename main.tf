@@ -9,4 +9,7 @@ module "security_group" {
 
     ingress_rules = local.sg_ingress_rules
     egress_rules  = local.sg_egress_rules
+
+    tags = merge({"Name" = coalesce(var.sg_name, format("%s-sg", var.name))}, 
+                    { "LoadBalancer" = var.name }, var.default_tags)
 }

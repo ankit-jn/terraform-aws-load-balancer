@@ -106,24 +106,13 @@ Refer [Configuration Examples](https://github.com/arjstack/terraform-aws-example
 | <a name="private_ipv4_address"></a> [private_ipv4_address](#input\_private\_ipv4\_address) | A private ipv4 address within the subnet to assign to the internal-facing load balancer.  | `string` |  | no |
 | <a name="ipv6_address"></a> [ipv6_address](#input\_ipv6\_address) | An ipv6 address within the subnet to assign to the internet-facing load balancer.  | `string` |  | no |
 
-#### sg_rules [ Ingress / Egress ]
+#### sg_rules
+[ Ingress / Egress ]
 
-- `cidr_blocks` Cannot be specified with `source_security_group_id` or `self`.
-- `ipv6_cidr_blocks` Cannot be specified with `source_security_group_id` or `self`.
-- `source_security_group_id` Cannot be specified with `cidr_blocks`, `ipv6_cidr_blocks` or `self`.
-- `self` Cannot be specified with `cidr_blocks`, `ipv6_cidr_blocks` or `source_security_group_id`.
+- Map of Security Group Rules with 2 Keys `ingress` and `egress`.
+- The value for each key will be a list of Security group rules where each entry of the list will again be a map of SG Rule Configuration
 
-| Name | Description | Type | Default | Required |
-|:------|:------|:------|:------|:------:|
-| <a name="rule_name"></a> [rule_name](#input\_rule\_name) | The name of the Rule (Used for terraform perspective to maintain unicity) | `string` |  | yes |
-| <a name="description"></a> [description](#input\_description) | Description of the rule. | `string` |  | yes |
-| <a name="from_port"></a> [from_port](#input\_from\_port) | Start port (or ICMP type number if protocol is "icmp" or "icmpv6"). | `number` |  | yes |
-| <a name="to_port"></a> [to_port](#input\_to\_port) | End port (or ICMP code if protocol is "icmp"). | `number` |  | yes |
-| <a name="protocol"></a> [protocol](#input\_protocol) | Protocol. If not icmp, icmpv6, tcp, udp, or all use the protocol number | `string \| number` |  | yes |
-| <a name="self"></a> [self](#input\_self) | Whether the security group itself will be added as a source to this ingress rule.  | `bool` |  | no |
-| <a name="cidr_blocks"></a> [cidr_blocks](#input\_cidr\_blocks) | List of IPv4 CIDR blocks | `list(string)` |  | no |
-| <a name="ipv6_cidr_blocks"></a> [ipv6_cidr_blocks](#input\_ipv6\_cidr\_blocks) | List of IPv6 CIDR blocks. | `list(string)` |  | no |
-| <a name="source_security_group_id"></a> [source_security_group_id](#input\_source\_security\_group\_id) | Security group id to allow access to/from | `string` |  | no |
+Refer [SG Rules Configuration](https://github.com/arjstack/terraform-aws-security-groups/blob/v1.0.0/README.md#security-group-rule--ingress--egress-) for the structure
 
 #### target_group
 

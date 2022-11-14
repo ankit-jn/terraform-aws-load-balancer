@@ -133,30 +133,10 @@ variable "sg_name" {
 variable "sg_rules" {
     description = <<EOF
 
-(Optional) Configuration List for Security Group Rules of Security Group:
-
-It is a map of Rule Pairs where,
-Key of the map is Rule Type and Value of the map would be an array of Security Rules Map 
-There could be 2 Rule Types [Keys] : 'ingress', 'egress'
-
-(Optional) Configuration List of Map for Security Group Rules where each entry will have following properties:
-
-rule_name: (Required) The name of the Rule (Used for terraform perspective to maintain unicity)
-description: (Optional) Description of the rule.
-from_port: (Required) Start port (or ICMP type number if protocol is "icmp" or "icmpv6").
-to_port: (Required) End port (or ICMP code if protocol is "icmp").
-protocol: (Required) Protocol. If not icmp, icmpv6, tcp, udp, or all use the protocol number
-
-self: (Optional) Whether the security group itself will be added as a source to this ingress rule. 
-cidr_blocks: (Optional) List of IPv4 CIDR blocks
-ipv6_cidr_blocks: (Optional) List of IPv6 CIDR blocks.
-source_security_group_id: (Optional) Security group id to allow access to/from
- 
-Note: 
-1. `cidr_blocks` Cannot be specified with `source_security_group_id` or `self`.
-2. `ipv6_cidr_blocks` Cannot be specified with `source_security_group_id` or `self`.
-3. `source_security_group_id` Cannot be specified with `cidr_blocks`, `ipv6_cidr_blocks` or `self`.
-4. `self` Cannot be specified with `cidr_blocks`, `ipv6_cidr_blocks` or `source_security_group_id`.
+(Optional) Map of Security Group Rules with 2 Keys ingress and egress.
+The value for each key will be a list of Security group rules where 
+each entry of the list will again be a map of SG Rule Configuration	
+SG Rules Configuration: Refer (https://github.com/arjstack/terraform-aws-security-groups/blob/v1.0.0/README.md#security-group-rule--ingress--egress-)
 
 Note: Only Valid for ALB
 
