@@ -136,7 +136,7 @@ variable "sg_rules" {
 (Optional) Map of Security Group Rules with 2 Keys ingress and egress.
 The value for each key will be a list of Security group rules where 
 each entry of the list will again be a map of SG Rule Configuration	
-SG Rules Configuration: Refer (https://github.com/arjstack/terraform-aws-security-groups/blob/v1.0.0/README.md#security-group-rule--ingress--egress-)
+SG Rules Configuration: Refer (https://github.com/ankit-jn/terraform-aws-security-groups/blob/v1.0.0/README.md#security-group-rule--ingress--egress-)
 
 Note: Only Valid for ALB
 
